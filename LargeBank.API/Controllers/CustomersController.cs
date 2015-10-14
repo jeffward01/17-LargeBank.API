@@ -67,8 +67,10 @@ namespace LargeBank.API.Controllers
 
         // PUT: api/Customers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutCustomer(int id, CustomerModel customer)
         {
+
+            //this checks is everything is good with the reqeust
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -79,7 +81,15 @@ namespace LargeBank.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            //Mark the object as Modified
+            //Update customer in the database
+            var dbCustomer = db.Customers.Find(id);
+
+            //update the Database
+            dbCustomer.Update(customer);
+
+            //Updates Entries STATE in the Database
+            db.Entry(dbCustomer).State = EntityState.Modified;
 
             try
             {

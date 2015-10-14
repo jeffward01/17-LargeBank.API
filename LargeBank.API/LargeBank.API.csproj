@@ -109,6 +109,7 @@
       <DependentUpon>LargeBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Customer.cs">
       <DependentUpon>LargeBankModel.tt</DependentUpon>

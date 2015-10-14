@@ -9,9 +9,10 @@
 
 namespace LargeBank.API
 {
+    using Models;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Customer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -32,5 +33,24 @@ namespace LargeBank.API
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Account> Accounts { get; set; }
+
+        public void Update(CustomerModel model)
+        {
+            //If new customer
+            if(model.CustomerId == 0)
+            {
+                CreatedDate = DateTime.Now;
+            }
+            FirstName = model.FirstName;
+            LastName = model.LastName;
+            Address1 = model.Address1;
+            Address2 = model.Address2;
+            City = model.City;
+            Zip = model.Zip;
+            States = model.States;
+        }
+
     }
+
+
 }

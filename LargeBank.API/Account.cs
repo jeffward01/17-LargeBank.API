@@ -27,10 +27,15 @@ namespace LargeBank.API
         public System.DateTime CreatedDate { get; set; }
         public decimal Balance { get; set; }
     
-        public virtual Customer Customer { get; set; }
+        //public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Statement> Statements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
+
+        public void Update(AccountModel account)
+        {
+
+        }
     }
 }
