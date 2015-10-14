@@ -70,7 +70,7 @@ namespace LargeBank.API.Controllers
         public IHttpActionResult PutCustomer(int id, CustomerModel customer)
         {
 
-            //this checks is everything is good with the reqeust
+            //this checks is everything is good with the request
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -112,30 +112,49 @@ namespace LargeBank.API.Controllers
 
         // POST: api/Customers
         [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        public IHttpActionResult PostCustomer(CustomerModel customer)
         {
+            //If everything is good with the communication
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            //Build new Customer
+            var dbCustomer = new Customer();
+
+            //Update Customer with new Model
+            dbCustomer.Update(customer);
+            
+            //add Customer model to DB
+            db.Customers.Add(dbCustomer);
+
+            //Updates Entries STATE in the Database
+            db.Entry(dbCustomer).State = EntityState.Modified;
+
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
         }
 
         // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(CustomerModel))]
         public IHttpActionResult DeleteCustomer(int id)
         {
+            //Locate Customer from Database
             Customer customer = db.Customers.Find(id);
+
+            //If Customer is not found in Database
             if (customer == null)
             {
                 return NotFound();
             }
 
             db.Customers.Remove(customer);
+
+            //Updates Entries STATE in the Database
+            db.Entry(customer).State = EntityState.Modified;
+
             db.SaveChanges();
 
             return Ok(customer);

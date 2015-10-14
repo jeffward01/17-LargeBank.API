@@ -9,9 +9,10 @@
 
 namespace LargeBank.API
 {
+    using Models;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Account
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -35,7 +36,15 @@ namespace LargeBank.API
 
         public void Update(AccountModel account)
         {
-
+            //If new customer
+            if (account.CustomerId == 0)
+            {
+                CreatedDate = DateTime.Now;
+            }
+            AccountId = account.AccountId;
+            AccountNumber = account.AccountNumber;
+            Balance = account.Balance;
+       
         }
     }
 }
