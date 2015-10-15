@@ -17,6 +17,26 @@ namespace LargeBank.API.Controllers
     {
         private LargeBankEntities db = new LargeBankEntities();
 
+        //This gets all accounts for a customerId
+        //GET: api/Customers/5
+        [Route("api/customers/{id}/accounts")]
+        public IHttpActionResult GetAccountsForCustomer(int id)
+        {
+            var customersAccount = db.Accounts.Where(a => a.CustomerId == id);
+
+            //Error checking
+
+            return Ok(customersAccount.Select(a => new AccountModel
+            {
+                AccountId = a.AccountId,
+                AccountNumber = a.AccountNumber,
+                Balance = a.Balance,
+                CreatedDate = a.CreatedDate,
+                CustomerId = a.CustomerId
+            }));
+        }
+
+        //This gets a list of all Customers
         // GET: api/Customers
         public IQueryable<CustomerModel> GetCustomers()
         {
@@ -37,6 +57,7 @@ namespace LargeBank.API.Controllers
             });
         }
 
+        //This gets Data from a Customer
         // GET: api/Customers/5
         [ResponseType(typeof(CustomerModel))]
         public IHttpActionResult GetCustomer(int id)
@@ -65,6 +86,7 @@ namespace LargeBank.API.Controllers
             return Ok(modelCustomer);
         }
 
+        //THis updates A Customer
         //Update Customer
         // PUT: api/Customers/5
         [ResponseType(typeof(void))]
@@ -111,6 +133,7 @@ namespace LargeBank.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //This creates a new Cusomter
         //Create new Customer
         // POST: api/Customers
         [ResponseType(typeof(Customer))]
@@ -139,6 +162,7 @@ namespace LargeBank.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
         }
 
+        //This deletes a customer
         // DELETE: api/Customers/5
         [ResponseType(typeof(CustomerModel))]
         public IHttpActionResult DeleteCustomer(int id)

@@ -54,9 +54,10 @@ namespace LargeBank.API.Controllers
 
             return Ok(modelTransaction);
         }
-        
+
 
         //Gets ALL transacitons for an accountId.
+        [Route("api/transactions/{accountId}/accounts")]
         public IHttpActionResult GetTransactions(int accountId)
         {
             var transaction = db.Transactions.Where(a => a.AccountId == accountId);

@@ -17,6 +17,30 @@ namespace LargeBank.API.Controllers
     {
         private LargeBankEntities db = new LargeBankEntities();
 
+
+        //Gets ALL transacitons for an accountId.
+        [Route("api/transactions/{AccountId}/transactions")]
+        public IHttpActionResult GetTransactions(int AccountId)
+        {
+            var transaction = db.Transactions.Where(a => a.AccountId == AccountId);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            //LINQ statement Projecting source to JSON
+            //Select method to return all CustomerModel from Customers class
+            return Ok(transaction.Select(c => new TransactionModel
+            {
+                AccountId = c.AccountId,
+                TransactionId = c.TransactionId,
+                TransactionDate = c.TransactionDate,
+                Amount = c.Amount,
+            }));
+        }
+
+
+        //Get all bank accounts
         //Get All Accounts
         // GET: api/Accounts
         public IQueryable<AccountModel> GetAccounts()
@@ -34,8 +58,10 @@ namespace LargeBank.API.Controllers
             });
         }
 
+        //Get all accounts for a CustomerID
         //Get All Accounts for Particular Customer
         //Get API/Accounts/CustomerId
+        [Route("api/accounts/{customerId}/accounts")]
         public IHttpActionResult GetAccounts(int customerId)
         {
             //Look in Accounts
@@ -57,11 +83,11 @@ namespace LargeBank.API.Controllers
                 Balance = c.Balance,
                 CreatedDate = c.CreatedDate,
                 CustomerId = c.CustomerId
-
             }));
 
         }
 
+        //Get an Account by Account Number
         //Get Particular Account by Account number
         // GET: api/Accounts/5
         [ResponseType(typeof(AccountModel))]
@@ -85,6 +111,7 @@ namespace LargeBank.API.Controllers
             return Ok(modelAccount);
         }
 
+        
         //Update Account
         // PUT: api/Accounts/5
         [ResponseType(typeof(void))]
