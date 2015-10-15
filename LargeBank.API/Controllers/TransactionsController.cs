@@ -33,7 +33,7 @@ namespace LargeBank.API.Controllers
             });
         }
 
-        // GET: api/Transactions/5
+        // GET: api/transactions/5
         [ResponseType(typeof(TransactionModel))]
         public IHttpActionResult GetTransaction(int id)
         {
@@ -52,6 +52,51 @@ namespace LargeBank.API.Controllers
             };
 
             return Ok(modelTransaction);
+        }
+
+        //Gets ALL transacitons for an accountId.
+        public IHttpActionResult GetTransactions(int accountId)
+        {
+            var transaction = db.Transactions.Where(a => a.AccountId == accountId);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            //LINQ statement Projecting source to JSON
+            //Select method to return all CustomerModel from Customers class
+            return Ok(transaction.Select(c => new TransactionModel
+            {
+                AccountId = c.AccountId,
+                TransactionId = c.TransactionId,
+                TransactionDate = c.TransactionDate,
+                Amount = c.Amount,
+            }));
+        }
+
+        //Gets Single Transaction from transactionId
+        public IHttpActionResult GetSingleTransaction(int TransactionId)
+        {
+           var transaction = db.Transactions.Find(TransactionId);
+          //  var transaction = db.Transactions.Where(a => a.TransactionId == TransactionId);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+
+
+            var modelTransactions = new TransactionModel
+            {
+                AccountId = transaction.AccountId,
+                TransactionId = transaction.TransactionId,
+                TransactionDate = transaction.TransactionDate,
+                Amount = transaction.Amount,
+            };
+
+
+            //Select method to return all CustomerModel from Customers class
+            return Ok(modelTransactions);
         }
 
         // PUT: api/Transactions/5

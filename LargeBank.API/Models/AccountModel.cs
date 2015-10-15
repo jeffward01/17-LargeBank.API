@@ -16,12 +16,14 @@ namespace LargeBank.API.Models
         public decimal Balance { get; set; }
 
 
-        public string TransactionsUrl
+        public string AllTransactionsUrl
         {
             get
             {
-                return "api/Transactions/" + AccountId;
+                return "api/transactions?accountId=" + AccountId;
             }
         }
+
+        
     }
 }

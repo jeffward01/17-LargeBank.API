@@ -6,7 +6,28 @@ using System.Threading.Tasks;
 
 namespace LargeBank.API.Models
 {
-    class TransactionModel
+   public class TransactionModel
     {
+
+        public int TransactionId { get; set; }
+        public Nullable<int> AccountId { get; set; }
+        public Nullable<System.DateTime> TransactionDate { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+
+        public string AccountsUrl
+        {
+            get
+            {
+                return "api/accounts/" + AccountId;
+            }
+        }
+        public string SingleTransactionUrl
+        {
+            get
+            {
+                return "api/transactions/" + TransactionId; ;
+            }
+
+        }
     }
 }

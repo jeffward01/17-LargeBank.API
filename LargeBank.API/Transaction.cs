@@ -9,16 +9,28 @@
 
 namespace LargeBank.API
 {
+    using Models;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Transaction
     {
         public int TransactionId { get; set; }
         public Nullable<int> AccountId { get; set; }
         public Nullable<System.DateTime> TransactionDate { get; set; }
         public Nullable<decimal> Amount { get; set; }
-    
+
         public virtual Account Account { get; set; }
+
+        public void Update(TransactionModel model)
+        {
+            //If new Transactions
+            if (model.TransactionId == 0)
+            {
+                TransactionDate = DateTime.Now;
+            }
+            Amount = model.Amount;
+        }
+
     }
 }

@@ -27,7 +27,7 @@ namespace LargeBank.API.Models
         {
             get
             {
-                return "api/accounts/getForCustomer/" + CustomerId;
+                return "api/accounts?customerId=" + CustomerId;
             }
         }
     }

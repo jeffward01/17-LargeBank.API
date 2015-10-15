@@ -17,6 +17,7 @@ namespace LargeBank.API.Controllers
     {
         private LargeBankEntities db = new LargeBankEntities();
 
+        //Get All Accounts
         // GET: api/Accounts
         public IQueryable<AccountModel> GetAccounts()
         {
@@ -33,6 +34,35 @@ namespace LargeBank.API.Controllers
             });
         }
 
+        //Get All Accounts for Particular Customer
+        //Get API/Accounts/CustomerId
+        public IHttpActionResult GetAccounts(int customerId)
+        {
+            //Look in Accounts
+            var accounts = db.Accounts.Where(a => a.CustomerId == customerId);
+
+            //this checks is everything is good with the request
+            if (accounts.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            //LINQ statement Projecting source to JSON
+
+            //Select method to return all CustomerModel from Customers class
+            return Ok(accounts.Select(c => new AccountModel
+            {
+                AccountId = c.AccountId,
+                AccountNumber = c.AccountNumber,
+                Balance = c.Balance,
+                CreatedDate = c.CreatedDate,
+                CustomerId = c.CustomerId
+
+            }));
+
+        }
+
+        //Get Particular Account by Account number
         // GET: api/Accounts/5
         [ResponseType(typeof(AccountModel))]
         public IHttpActionResult GetAccount(int id)
@@ -55,6 +85,7 @@ namespace LargeBank.API.Controllers
             return Ok(modelAccount);
         }
 
+        //Update Account
         // PUT: api/Accounts/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAccount(int id, AccountModel account)
@@ -101,6 +132,7 @@ namespace LargeBank.API.Controllers
         }
 
 
+        //Create new Account
         // POST: api/Accounts
         [ResponseType(typeof(AccountModel))]
         public IHttpActionResult PostAccount(AccountModel account)

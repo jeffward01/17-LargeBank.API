@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statement.cs">
       <DependentUpon>LargeBankModel.tt</DependentUpon>

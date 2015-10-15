@@ -65,6 +65,7 @@ namespace LargeBank.API.Controllers
             return Ok(modelCustomer);
         }
 
+        //Update Customer
         // PUT: api/Customers/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutCustomer(int id, CustomerModel customer)
@@ -110,6 +111,7 @@ namespace LargeBank.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //Create new Customer
         // POST: api/Customers
         [ResponseType(typeof(Customer))]
         public IHttpActionResult PostCustomer(CustomerModel customer)
