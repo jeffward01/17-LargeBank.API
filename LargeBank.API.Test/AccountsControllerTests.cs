@@ -83,37 +83,52 @@ namespace LargeBank.API.Test
         [TestMethod]
         public void PutAccountUpdateAccount()
         {
+            IHttpActionResult result;
+            CreatedAtRouteNegotiatedContentResult<AccountModel> contentResult;
+            OkNegotiatedContentResult<AccountModel> accountResult;
+
             //Arrange
-            var accountsController = new AccountsController();
-
-            //Build new AccountModel Object
-            var newAccount = new AccountModel
+            using (var accountsController = new AccountsController())
             {
-                AccountNumber = 21323,
-                Balance = 213213,
-                             
-            };
-            //Insert AccountModelObject into Database so 
-            //that I can take it out and test for update.
-            IHttpActionResult result = accountsController.PostAccount(newAccount);
-
-            //Cast result as Content Result so that I can gather information from ContentResult
-            CreatedAtRouteNegotiatedContentResult<AccountModel> contentResult = (CreatedAtRouteNegotiatedContentResult<AccountModel>)result;
+                //Build new AccountModel Object
+                var newAccount = new AccountModel
+                {
+                    AccountNumber = 21323,
+                    Balance = 213213,
 
 
-            //Result contains the customer I had JUST createad
-            result = accountsController.GetAccount(contentResult.Content.AccountId);
+                };
+                //Insert AccountModelObject into Database so 
+                //that I can take it out and test for update.
+                 result = accountsController.PostAccount(newAccount);
 
-            //Get AccountModel from 'result'
-            OkNegotiatedContentResult<AccountModel> customerResult = (OkNegotiatedContentResult<AccountModel>)result;
+                //Cast result as Content Result so that I can gather information from ContentResult
+                 contentResult = (CreatedAtRouteNegotiatedContentResult<AccountModel>)result;
+            }
+            using (var SecondaccountsController = new AccountsController())
+            {
+                //Result contains the customer I had JUST createad
+                result = SecondaccountsController.GetAccount(contentResult.Content.AccountId);
 
-            //Act
-            //The result of the Put Request
-            result = accountsController.PutAccount(customerResult.Content.AccountId, newAccount);
+                Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<AccountModel>));
 
-            //Assert
-            Assert.IsInstanceOfType(result, typeof(StatusCodeResult));
+                //Get AccountModel from 'result'
+                accountResult = (OkNegotiatedContentResult<AccountModel>)result;
+            }
 
+            using (var thirdController = new AccountsController())
+            { 
+                var modifiedAccount = accountResult.Content;
+
+                modifiedAccount.Balance += 5;
+
+                //Act
+                //The result of the Put Request
+                result = thirdController.PutAccount(accountResult.Content.AccountId, modifiedAccount);
+
+                //Assert
+                Assert.IsInstanceOfType(result, typeof(StatusCodeResult));
+            }
         }
 
         [TestMethod]
@@ -139,7 +154,7 @@ namespace LargeBank.API.Test
             CreatedAtRouteNegotiatedContentResult<AccountModel> contentResult = (CreatedAtRouteNegotiatedContentResult<AccountModel>)result;
 
 
-            //Result contains the customer I had JUST createad
+            //Result contains the customer I had JUST created
             result = customersController.GetAccount(contentResult.Content.AccountId);
 
             //Get CustomerModel from 'result'
@@ -155,7 +170,7 @@ namespace LargeBank.API.Test
             //If action returns: NotFound()
             Assert.IsNotInstanceOfType(result, typeof(NotFoundResult));
 
-            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<CustomerModel>));
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<AccountModel>));
         }
 
     }

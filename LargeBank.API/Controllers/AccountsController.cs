@@ -123,7 +123,7 @@ namespace LargeBank.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != account.CustomerId)
+            if (id != account.AccountId)
             {
                 return BadRequest();
             }
@@ -179,20 +179,19 @@ namespace LargeBank.API.Controllers
             //add Customer model to DB
             db.Accounts.Add(dbAccount);
 
-            //Updates Entries STATE in the Database
-            db.Entry(dbAccount).State = EntityState.Modified;
-
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = account.CustomerId }, account);
+            account.AccountId = dbAccount.AccountId;
+
+            return CreatedAtRoute("DefaultApi", new { id = account.AccountId }, account);
         }
 
         // DELETE: api/Accounts/5
         [ResponseType(typeof(AccountModel))]
-        public IHttpActionResult DeleteAccount(int id)
+        public IHttpActionResult DeleteAccount(int accountId)
         {
             //Locate Customer from Database
-            Account account = db.Accounts.Find(id);
+            Account account = db.Accounts.Find(accountId);
 
             //If Customer is not found in Database
             if (account == null)
@@ -211,7 +210,7 @@ namespace LargeBank.API.Controllers
                 AccountId = account.AccountId,
                 Balance = account.Balance,
                 CreatedDate = account.CreatedDate,
-                CustomerId = account.CustomerId,
+                CustomerId = account.CustomerId
 
             };
 

@@ -37,7 +37,7 @@ namespace LargeBank.API
         public void Update(AccountModel account)
         {
             //If new customer
-            if (account.CustomerId == 0)
+            if (account.AccountId == 0)
             {
                 CreatedDate = DateTime.Now;
             }
