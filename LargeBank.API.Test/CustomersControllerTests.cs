@@ -46,6 +46,7 @@ namespace LargeBank.API.Test
                 States = "CA",
                 Zip = "92101"
             };
+
             //The result of the Post Request
             IHttpActionResult result = customerController.PostCustomer(newCustomer);
 
@@ -62,5 +63,96 @@ namespace LargeBank.API.Test
             //then customer was NOT added to Database
             Assert.IsTrue(contentResult.Content.CustomerId != 0);
         }
+
+        [TestMethod]
+        public void DeleteCustomerRecord()
+        {
+            //Arrange
+            //Create Controller
+            var customersController = new CustomersController();
+
+            //Create a customer to be deleted
+            var dbCustomer = new CustomerModel
+            {
+                FirstName = "Testy",
+                LastName = "McTesterson",
+                Address1 = "123 Main Street",
+                Address2 = "Suite 2",
+                City = "San Diego",
+                States = "CA",
+                Zip = "92101",
+           
+            };
+
+            //Add 'new customer' to the DB using a POST
+            //Save returned value as RESULT
+            IHttpActionResult result = customersController.PostCustomer(dbCustomer);
+
+            //Cast result as Content Result so that I can gather information from ContentResult
+            CreatedAtRouteNegotiatedContentResult<CustomerModel> contentResult = (CreatedAtRouteNegotiatedContentResult<CustomerModel>)result;
+
+
+            //Result contains the customer I had JUST createad
+            result = customersController.GetCustomer(contentResult.Content.CustomerId);
+
+            //Get CustomerModel from 'result'
+            OkNegotiatedContentResult<CustomerModel> customerResult = (OkNegotiatedContentResult<CustomerModel>)result;
+
+
+
+
+            //Act
+            //The result of the Delete Request
+             result = customersController.DeleteCustomer(customerResult.Content.CustomerId);
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<CustomerModel>));         
+        }
+
+        [TestMethod]
+        public void GetCustomerReturnCustomer()
+        {
+            //Arrange
+            var customerController = new CustomersController();
+
+            //Act
+            IHttpActionResult result = customerController.GetCustomer(1);
+
+
+            //Assert
+            //If action returns: NotFound()
+            Assert.IsNotInstanceOfType(result, typeof(NotFoundResult));
+
+            //If action returns: Ok()
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<CustomerModel>));
+
+            //if action was returing data in the body like: Ok<string>("data: 12")
+          //  OkNegotiatedContentResult<string> conNegResult = Assert.IsType<OkNegotiatedContentResult<string>>(actionResult);
+          //  Assert.Equal("data: 12", conNegResult.Content);
+
+
+        }
+
+        [TestMethod]
+        public void GetAccountsforCustomerIDReurnAccounts()
+        {
+            //Arrange
+            var customerController = new CustomersController();
+
+            //Act
+            IHttpActionResult result = customerController.GetAccountsForCustomer(1);
+
+            //Assert
+            //If action returns: NotFound()
+            Assert.IsNotInstanceOfType(result, typeof(NotFoundResult));
+
+            //If action returns: Ok()
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<IQueryable<AccountModel>>));
+
+
+
+
+        }
+
     }
 }

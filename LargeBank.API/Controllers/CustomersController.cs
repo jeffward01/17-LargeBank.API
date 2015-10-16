@@ -152,12 +152,11 @@ namespace LargeBank.API.Controllers
             dbCustomer.Update(customer);
             
             //add Customer model to DB
-            db.Customers.Add(dbCustomer);
-
-            //Updates Entries STATE in the Database
-            db.Entry(dbCustomer).State = EntityState.Modified;
+            db.Customers.Add(dbCustomer);         
 
             db.SaveChanges();
+
+            customer.CustomerId = dbCustomer.CustomerId;
 
             return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
         }
@@ -178,12 +177,21 @@ namespace LargeBank.API.Controllers
 
             db.Customers.Remove(customer);
 
-            //Updates Entries STATE in the Database
-            db.Entry(customer).State = EntityState.Modified;
-
+      
             db.SaveChanges();
 
-            return Ok(customer);
+            var customerModel = new CustomerModel
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Address1 = customer.Address1,
+                Address2 = customer.Address2,
+                City = customer.City,
+                States = customer.States,
+                Zip = customer.Zip,
+            };
+
+            return Ok(customerModel);
         }
 
         protected override void Dispose(bool disposing)
