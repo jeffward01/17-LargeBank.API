@@ -180,6 +180,7 @@ namespace LargeBank.API.Controllers
       
             db.SaveChanges();
 
+            //Return model to user
             var customerModel = new CustomerModel
             {
                 FirstName = customer.FirstName,

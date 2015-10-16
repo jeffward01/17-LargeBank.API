@@ -202,12 +202,20 @@ namespace LargeBank.API.Controllers
 
             db.Accounts.Remove(account);
 
-            //Updates Entries STATE in the Database
-            db.Entry(account).State = EntityState.Modified;
-
             db.SaveChanges();
 
-            return Ok(account);
+            //return model to user
+            var accountModel = new AccountModel
+            {
+                AccountNumber = account.AccountNumber,
+                AccountId = account.AccountId,
+                Balance = account.Balance,
+                CreatedDate = account.CreatedDate,
+                CustomerId = account.CustomerId,
+
+            };
+
+            return Ok(accountModel);
         }
 
         protected override void Dispose(bool disposing)
