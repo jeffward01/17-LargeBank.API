@@ -10,7 +10,7 @@ using System.Web.Http.Results;
 namespace LargeBank.API.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class CustomerControllerTests
     {
         [TestMethod]
         public void GetCustomersReturnsCustomers()
@@ -65,6 +65,46 @@ namespace LargeBank.API.Test
         }
 
         [TestMethod]
+        public void PutCustomerUpdatesCustomer()
+        {
+            //Arrange
+            var cusomersContoller = new CustomersController();
+
+            var newCustomer = new CustomerModel
+            {
+                FirstName = "Testy",
+                LastName = "McTesterson",
+                Address1 = "123 Main Street",
+                Address2 = "Suite 2",
+                City = "San Diego",
+                States = "CA",
+                Zip = "92101"
+            };
+
+            //The result of the Post Request
+            IHttpActionResult result = cusomersContoller.PostCustomer(newCustomer);
+
+            //Cast result as Content Result so that I can gather information from ContentResult
+            CreatedAtRouteNegotiatedContentResult<CustomerModel> contentResult = (CreatedAtRouteNegotiatedContentResult<CustomerModel>)result;
+
+
+            //Result contains the customer I had JUST createad
+            result = cusomersContoller.GetCustomer(contentResult.Content.CustomerId);
+
+            //Get CustomerModel from 'result'
+            OkNegotiatedContentResult<CustomerModel> customerResult = (OkNegotiatedContentResult<CustomerModel>)result;
+
+
+            //Act
+            //The result of the Put Request
+            result = cusomersContoller.PutCustomer(customerResult.Content.CustomerId, newCustomer);
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(StatusCodeResult));
+
+        }
+
+        [TestMethod]
         public void DeleteCustomerRecord()
         {
             //Arrange
@@ -99,13 +139,15 @@ namespace LargeBank.API.Test
             OkNegotiatedContentResult<CustomerModel> customerResult = (OkNegotiatedContentResult<CustomerModel>)result;
 
 
-
-
             //Act
             //The result of the Delete Request
              result = customersController.DeleteCustomer(customerResult.Content.CustomerId);
 
             //Assert
+
+            //If action returns: NotFound()
+            Assert.IsNotInstanceOfType(result, typeof(NotFoundResult));
+
             Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<CustomerModel>));         
         }
 
@@ -149,10 +191,6 @@ namespace LargeBank.API.Test
             //If action returns: Ok()
             Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<IQueryable<AccountModel>>));
 
-
-
-
         }
-
     }
 }
