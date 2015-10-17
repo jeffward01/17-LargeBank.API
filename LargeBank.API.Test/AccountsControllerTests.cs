@@ -11,7 +11,7 @@ namespace LargeBank.API.Test
     [TestClass]
     public class AccountsControllerTests
     {
-       [TestMethod]
+        [TestMethod]
         public void GetTransactionsReturnTransactions()
         {
             //Arrange
@@ -79,7 +79,6 @@ namespace LargeBank.API.Test
 
         }
 
-        //Broken for some reason.  Bad test.
         [TestMethod]
         public void PutAccountUpdateAccount()
         {
@@ -100,10 +99,10 @@ namespace LargeBank.API.Test
                 };
                 //Insert AccountModelObject into Database so 
                 //that I can take it out and test for update.
-                 result = accountsController.PostAccount(newAccount);
+                result = accountsController.PostAccount(newAccount);
 
                 //Cast result as Content Result so that I can gather information from ContentResult
-                 contentResult = (CreatedAtRouteNegotiatedContentResult<AccountModel>)result;
+                contentResult = (CreatedAtRouteNegotiatedContentResult<AccountModel>)result;
             }
             using (var SecondaccountsController = new AccountsController())
             {
@@ -117,7 +116,7 @@ namespace LargeBank.API.Test
             }
 
             using (var thirdController = new AccountsController())
-            { 
+            {
                 var modifiedAccount = accountResult.Content;
 
                 modifiedAccount.Balance += 5;
@@ -173,5 +172,36 @@ namespace LargeBank.API.Test
             Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<AccountModel>));
         }
 
+        [TestMethod]
+        public void PostAccountUpdateAccount()
+        {
+            //Arrange
+            var accountController = new AccountsController();
+
+            //Act
+            var newAccount = new AccountModel
+            {
+                AccountNumber = 1231,
+                Balance = 1222222
+            };
+
+            //Get the result of the post request
+            IHttpActionResult result = accountController.PostAccount(newAccount);
+
+            //If not 'true' Assert False
+            Assert.IsInstanceOfType(result, typeof(CreatedAtRouteNegotiatedContentResult<AccountModel>));
+
+            //Cast
+            CreatedAtRouteNegotiatedContentResult<AccountModel> contentResult = (CreatedAtRouteNegotiatedContentResult<AccountModel>)result;
+
+            //Check if Customer is posted to the database
+            //Check to see if Customer ID is NOT equal to zero.  If Customer Id us equal to zero,
+            //then customer was NOT added to Database
+            Assert.IsTrue(contentResult.Content.AccountId != 0);
+
+
+        }
+
     }
 }
+//Build Post

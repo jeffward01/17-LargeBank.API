@@ -17,7 +17,7 @@ namespace LargeBank.API.Controllers
     {
         private LargeBankEntities db = new LargeBankEntities();
 
-        // GET: api/Transactions
+        // GET: api/Transactions   {1}
         public IQueryable<TransactionModel> GetTransactions()
         {
             //LINQ statement Projecting source to JSON
@@ -34,7 +34,7 @@ namespace LargeBank.API.Controllers
         }
 
         
-        // GET: api/transactions/5
+        // GET: api/transactions/5  {2}
       [ResponseType(typeof(TransactionModel))]
         public IHttpActionResult GetTransaction(int id)
         {
@@ -56,16 +56,18 @@ namespace LargeBank.API.Controllers
         }
 
 
-        //Gets ALL transacitons for an accountId.
+        //Gets ALL transacitons for an accountId.  {3}
         [Route("api/transactions/{accountId}/accounts")]
         public IHttpActionResult GetTransactions(int accountId)
         {
+            
             var transaction = db.Transactions.Where(a => a.AccountId == accountId);
+            
             if (transaction == null)
             {
                 return NotFound();
             }
-
+            
             //LINQ statement Projecting source to JSON
             //Select method to return all CustomerModel from Customers class
             return Ok(transaction.Select(c => new TransactionModel
@@ -105,7 +107,7 @@ namespace LargeBank.API.Controllers
         */
         //Update
         // PUT: api/Transactions/5
-        [ResponseType(typeof(void))]
+        [ResponseType(typeof(void))] // {4}
         public IHttpActionResult PutTransaction(int id, TransactionModel transaction)
         {
             if (!ModelState.IsValid)
@@ -150,7 +152,7 @@ namespace LargeBank.API.Controllers
 
         //Create
         // POST: api/Transactions
-        [ResponseType(typeof(TransactionModel))]
+        [ResponseType(typeof(TransactionModel))] // {5}
         public IHttpActionResult PostTransaction(TransactionModel transaction)
         {
             //If everything is good with the communication
@@ -168,16 +170,13 @@ namespace LargeBank.API.Controllers
             //add Customer model to DB
             db.Transactions.Add(dbTransaction);
 
-            //Updates Entries STATE in the Database
-            db.Entry(dbTransaction).State = EntityState.Modified;
-
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = transaction.TransactionId }, transaction);
         }
 
         // DELETE: api/Transactions/5
-        [ResponseType(typeof(TransactionModel))]
+        [ResponseType(typeof(TransactionModel))] //{6}
         public IHttpActionResult DeleteTransaction(int id)
         {
             Transaction transaction = db.Transactions.Find(id);
