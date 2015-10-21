@@ -32,6 +32,7 @@ namespace LargeBank.API.Test
             var transactionController = new TransactionsController();
 
             //Act
+          
             IHttpActionResult result = transactionController.GetTransaction(1);
 
             //Assert
@@ -169,8 +170,6 @@ namespace LargeBank.API.Test
 
             //Act
             //The result of the Delete Request
-
-
            IHttpActionResult second = transactionsController.DeleteTransaction(1);
 
             //Assert

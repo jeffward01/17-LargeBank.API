@@ -39,11 +39,12 @@ namespace LargeBank.API.Controllers
         public IHttpActionResult GetTransaction(int id)
         {
             Transaction transaction = db.Transactions.Find(id);
+            
             if (transaction == null)
             {
                 return NotFound();
             }
-
+            
             TransactionModel modelTransaction = new TransactionModel
             {
                 TransactionId = transaction.TransactionId,
