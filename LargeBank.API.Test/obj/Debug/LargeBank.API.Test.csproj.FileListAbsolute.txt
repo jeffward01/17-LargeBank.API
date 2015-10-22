@@ -30,3 +30,6 @@ C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\L
 C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\LargeBank.API.Test\obj\Debug\LargeBank.API.Test.csprojResolveAssemblyReference.cache
 C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\LargeBank.API.Test\obj\Debug\LargeBank.API.Test.dll
 C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\LargeBank.API.Test\obj\Debug\LargeBank.API.Test.pdb
+C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\LargeBank.API.Test\bin\Debug\System.Web.Http.Cors.dll
+C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\LargeBank.API.Test\bin\Debug\System.Web.Cors.dll
+C:\Users\jward01\Documents\Visual Studio 2015\Projects\LargeBank-API\LargeBank\LargeBank.API.Test\bin\Debug\System.Web.Http.Cors.xml

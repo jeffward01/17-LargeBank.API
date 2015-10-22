@@ -15,6 +15,8 @@ namespace LargeBank.API.Models
         public System.DateTime CreatedDate { get; set; }
         public decimal Balance { get; set; }
 
+        public int TransactionsCount { get; set; }
+
 
         public string AllTransactionsUrl
         {

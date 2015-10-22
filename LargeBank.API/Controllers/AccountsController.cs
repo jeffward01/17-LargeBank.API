@@ -54,7 +54,8 @@ namespace LargeBank.API.Controllers
                 AccountNumber = c.AccountNumber,
                 Balance = c.Balance,
                 CreatedDate = c.CreatedDate,
-                CustomerId = c.CustomerId,         
+                CustomerId = c.CustomerId,   
+                TransactionsCount = c.Transactions.Count      
             });
         }
 

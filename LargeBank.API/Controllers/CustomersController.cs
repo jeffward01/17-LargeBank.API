@@ -175,6 +175,19 @@ namespace LargeBank.API.Controllers
                 return NotFound();
             }
 
+            var transactions = db.Transactions.Where(t => t.Account.CustomerId == customer.CustomerId);
+
+            db.Transactions.RemoveRange(transactions);
+
+            db.SaveChanges();
+
+            var accounts = db.Accounts.Where(a => a.CustomerId == customer.CustomerId);
+
+            db.Accounts.RemoveRange(accounts);
+
+
+            db.SaveChanges();
+
             db.Customers.Remove(customer);
 
       
